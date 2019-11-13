@@ -1,5 +1,6 @@
 clc
 clear
+close
 
 syms x1 x2;
 f = (x1-4)^4+(x1-4*x2)^2;
