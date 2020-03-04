@@ -10,18 +10,17 @@ df_dx2=diff(f,x2);
 grad_a = [subs(df_dx1,[x1,x2],x(1,:)), subs(df_dx2,[x1,x2],x(1,:))];
 grad = [subs(df_dx1,[x1,x2],x(2,:)), subs(df_dx2,[x1,x2],x(2,:))];
 i = 2;
-H=eye(2);
-while i < 4   
+D=eye(2);
+while i < 4
     s = (x(i,:)-x(i-1,:))';
     q = grad'-grad_a';
-    h_new = H + ((q*q')/(q'*s))-((H*(s*s')*H')/(s'*H*s));
-    inv_h = inv(h_new);
-    x(i+1,:) = x(i)-inv_h*grad';
+    d_new = D + ((s*s')/(q'*s))-((D*(q*q')*D')/(q'*D*q));
+    x(i+1,:) = x(i)-d_new*grad';
     z(i+1) = double(subs(f,[x1,x2],x(i+1,:)));
     i = i +1;
     grad_a = grad;
     grad = [subs(df_dx1,[x1,x2],x(i,:)), subs(df_dx2,[x1,x2],x(i,:))];
-    H = h_new;
+    D = d_new;
 end
 
 fcontour(f, 'Fill', 'On');
